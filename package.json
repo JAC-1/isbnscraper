@@ -1,0 +1,20 @@
+{
+  "name": "barcodefun",
+  "version": "1.0.0",
+  "description": "isbn-lookup-test",
+  "main": "reader.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "type": "module",
+  "author": "me",
+  "license": "MIT",
+  "dependencies": {
+    "exceljs": "^4.3.0",
+    "node-fetch": "^3.2.10",
+    "node-html-parser": "^6.1.1",
+    "node-xlsx": "^0.21.0",
+    "puppeteer": "^18.0.5"
+  }
+}
