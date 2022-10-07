@@ -11,6 +11,6 @@ Currently under development and testing.
 
 TODO:
 
-- Efficent way to query multiple sites if the main site fails to return anything
+- Efficent way to query multiple sites if the main site fails to return anything (pageScraper.js)
 - Set up an local db to store returned data
 - Use stored data in db to generate an .xlsx file
