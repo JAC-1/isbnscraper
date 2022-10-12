@@ -1,6 +1,9 @@
 import { urls } from "./siteResources.js";
+import write from "./writeToDb.js"
 const isbns = ["0061964360", "0199535566"];
 // const isbns = ['9781599664026']
+
+
 
 async function pagePromise(url, fields, page) {
   console.log(`Navigating to ${url}.`);
@@ -41,6 +44,8 @@ const iterateThroughURLs = (urls, page) => async (data, isbn) => {
 export default async function scraper(browser) {
   const newPage = await browser.newPage();
   const isbnData = await isbns.reduce(await iterateThroughURLs(urls, newPage), {});
+  write(isbnData);
+
 
   console.log('final result', JSON.stringify(isbnData));
   await browser.close();
