@@ -25,6 +25,7 @@ async function pagePromise(url, fields, page) {
 }
 
 const iterateThroughURLs = (urls, page) => async (data, isbn) => {
+  data = await data;
   for (const { name, url, fields } of urls) {
     console.log(`Trying to find data on ${name}...`);
     try {
