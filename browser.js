@@ -8,7 +8,6 @@ export default async function startBrowser() {
       headless: false,
       args: ["--disable-setuid-sandbox"],
       'ignoreHTTPSErrors': true,
-      slowMo: 200,
     });
   } catch (err) {
     console.log("Could not create the browser instance");
