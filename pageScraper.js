@@ -1,9 +1,7 @@
 import { urls } from "./siteResources.js";
-import write from "./writeToDb.js"
-const isbns = ["0061964360", "0199535566"];
+import writeData from "./writeToDb.js";
+const isbns = ["4863892306", "4863892306"];
 // const isbns = ['9781599664026']
-
-
 
 async function pagePromise(url, fields, page) {
   console.log(`Navigating to ${url}.`);
@@ -14,40 +12,41 @@ async function pagePromise(url, fields, page) {
     async (acc, [field, queryString]) => {
       try {
         const value = await page.$eval(queryString, (text) => text.textContent);
-        return { ...await acc, [field]: value };
-      } catch(err) {
+        return { ... await acc, [field]: value };
+      } catch (err) {
         console.log('Failed pluck for:', field);
         return acc;
       }
     },
-  {});
-
-  console.warn('Reduced value:', JSON.stringify(result));
+    {});
 
   return result;
 }
 
 const iterateThroughURLs = (urls, page) => async (data, isbn) => {
+  await data
   for (const { name, url, fields } of urls) {
     console.log(`Trying to find data on ${name}...`);
     try {
       const pageData = await pagePromise(url(isbn), fields, page);
-      if (pageData) return { ...data, [isbn]: pageData };
+      if (pageData) {
+        let result = { ...data, [isbn]: pageData };
+        console.log("Writting to database.")
+        return await writeData(result);
+      }
     } catch (err) {
+      // console.log(err)
       console.log(`Couldn't find the isbn resource on ${name}`);
     }
   }
   console.log(`Couldn't find any information for isbn: ${isbn}`);
-  return data;
 };
 
 export default async function scraper(browser) {
   const newPage = await browser.newPage();
   const isbnData = await isbns.reduce(await iterateThroughURLs(urls, newPage), {});
-  write(isbnData);
 
-
-  console.log('final result', JSON.stringify(isbnData));
+  // console.log('final result', JSON.stringify(isbnData));
   await browser.close();
   return isbnData;
 }

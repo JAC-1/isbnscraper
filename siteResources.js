@@ -8,7 +8,7 @@ export const urls = [
             author: '[itemprop=author]',
             publisher: '[itemprop=publisher]',
             about: '[itemprop=description]',
-            pageCount: '.info-area > ul > li',
+            pages: '.info-area > ul > li',
         },
     },
     {
