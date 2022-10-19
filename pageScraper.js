@@ -1,6 +1,7 @@
 import { urls } from "./siteResources.js";
 import writeData from "./writeToDb.js";
-const isbns = ["4863892306", "4863892306"];
+// const isbns = ["9784523265436"];
+// const isbns = ["4065249716", "9784523265436"];
 // const isbns = ['9781599664026']
 
 async function pagePromise(url, fields, page) {
@@ -23,30 +24,40 @@ async function pagePromise(url, fields, page) {
   return result;
 }
 
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 const iterateThroughURLs = (urls, page) => async (data, isbn) => {
   await data
   for (const { name, url, fields } of urls) {
+    const time = Math.floor((Math.random() * 3) * 1000)
     console.log(`Trying to find data on ${name}...`);
     try {
       const pageData = await pagePromise(url(isbn), fields, page);
-      if (pageData) {
+      if (pageData.title) {
         let result = { ...data, [isbn]: pageData };
-        console.log("Writting to database.")
-        return await writeData(result);
+        console.log(`Writting to database, and sleeping for ${time}`)
+        await sleep(time)
+        return await writeData(result)
       }
     } catch (err) {
-      // console.log(err)
       console.log(`Couldn't find the isbn resource on ${name}`);
+
     }
   }
-  console.log(`Couldn't find any information for isbn: ${isbn}`);
+  await sleep(time)
+  console.log(`Couldn't find any information for isbn: ${isbn} \nSleeping for ${time}`);
 };
 
-export default async function scraper(browser) {
+
+
+export default async function scraper(browser, isbns) {
   const newPage = await browser.newPage();
   const isbnData = await isbns.reduce(await iterateThroughURLs(urls, newPage), {});
 
-  // console.log('final result', JSON.stringify(isbnData));
+  console.log('final result', JSON.stringify(isbnData));
   await browser.close();
   return isbnData;
 }

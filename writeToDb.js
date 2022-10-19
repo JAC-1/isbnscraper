@@ -23,6 +23,9 @@ export default async function writeToDb(data) {
     if (key == "pages") {
       const [num] = i[1].match(/\d+/g) // Remove all extra text and keep only the number
       return { ...arr, [key]: num }
+    } else if (key == "about") {
+      const words = i[1].replaceAll("\n", " ");
+      return { ...arr, [key]: words}
     } else {
       return { ...arr, [key]: i[1] }
     }

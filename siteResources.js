@@ -16,7 +16,7 @@ export const urls = [
         url: (isbn) => `https://www.bookfinder.com/search/?isbn=${isbn}&mode=isbn&st=sr&ac=qr`,
         waitSelector: '.attributes',
         fields: {
-            title: '[itemprop=name]',
+            title: '#describe-isbn-title',
             author: '[itemprop=author]',
             publisher: '[itemprop=publisher]',
             about: '[itemprop=description]',
