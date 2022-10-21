@@ -1,8 +1,5 @@
 import { urls } from "./siteResources.js";
 import writeData from "./writeToDb.js";
-// const isbns = ["9784523265436"];
-// const isbns = ["4065249716", "9784523265436"];
-// const isbns = ['9781599664026']
 
 async function pagePromise(url, fields, page) {
   console.log(`Navigating to ${url}.`);
@@ -24,15 +21,9 @@ async function pagePromise(url, fields, page) {
   return result;
 }
 
-
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 const iterateThroughURLs = (urls, page) => async (data, isbn) => {
   await data
   for (const { name, url, fields } of urls) {
-    const time = Math.floor((Math.random() * 3) * 1000)
     console.log(`Trying to find data on ${name}...`);
     try {
       const pageData = await pagePromise(url(isbn), fields, page);

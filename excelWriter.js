@@ -36,12 +36,8 @@ export default async function writeToExcel() {
         { header: 'Publisher', key: 'publisher', width: 32 },
         { header: 'Pages', key: 'pages', width: 32 },
         { header: 'About', key: 'about', width: 32 },
+        { header: 'Categories', key: 'categories', width: 32 },
     ];
-
-    function createColumns(header, key) {
-        { head }
-
-    }
 
     let allBooks = new Array();
     for (let i = 0; i < data2.length; i++) {

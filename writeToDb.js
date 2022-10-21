@@ -13,6 +13,15 @@ export default async function writeToDb(data) {
   // Loop through all the keys in the db
   // Get key from incoming data
   // See if incoming key is in list of keys
+  // Incoming data is { 
+  // isbnNum : {
+  //  title:,
+  //  author:,
+  //  publisher:,
+  //  about:,
+  //  pages:,
+  //
+  // }}
 
   const allStoredKeys = db.data.map((i) => Object.keys(i)).flat();
   const [incomingKey] = Object.keys(data);

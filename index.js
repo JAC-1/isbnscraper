@@ -7,9 +7,9 @@ import excelReader from "./excelReader.js";
 let browserInstance = startBrowser();
 
 // Wait to read the isbn file
-const path = "./test.xlsx"
+const path = "./biggertest.xlsx"
 const isbns = excelReader(path);
-
+//insert google books check here
 scraperController(browserInstance, isbns)
 // scraperController(browserInstance)
 
