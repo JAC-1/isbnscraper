@@ -7,10 +7,17 @@ import excelReader from "./excelReader.js";
 let browserInstance = startBrowser();
 
 // Wait to read the isbn file
-const path = "./test.xlsx"
+const path = "./biggerTest.xlsx"
 const isbns = excelReader(path);
 
-scraperController(browserInstance, isbns)
-// scraperController(browserInstance)
+scraperController(browserInstance, isbns);
 
+// function findBooks() {
+//   console.log("Getting stuck running google Alg");
+//   const noIsbnData = googleBooks(isbns);
+//   scraperController(browserInstance, noIsbnData);
+// }
+
+
+// scraperController(browserInstance)
 

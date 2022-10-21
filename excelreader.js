@@ -9,11 +9,11 @@ export default async function readData(path) {
   const col1 = worksheet.getColumn(1);
   const values = col1.values
   const isbns = values.slice(3,);
-  let cleanIsbns = new Array();
-  isbns.forEach((isbn) => {
-    cleanIsbns.push(isbn.replaceAll("-", ""))
-  })
-  return cleanIsbns
+  // let cleanIsbns = new Array();
+  // isbns.forEach((isbn) => {
+  //   cleanIsbns.push(isbn.replaceAll("-", ""))
+  // })
+  return isbns
 }
 
 
