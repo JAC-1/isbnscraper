@@ -36,6 +36,7 @@ export default async function writeToExcel() {
         { header: 'Publisher', key: 'publisher', width: 32 },
         { header: 'Pages', key: 'pages', width: 32 },
         { header: 'About', key: 'about', width: 32 },
+        { header: 'Categories', key: 'categories', width: 32 },
     ];
 
     function createColumns(header, key) {
@@ -51,11 +52,13 @@ export default async function writeToExcel() {
         const allKeys = Object.keys(bookinfo) // get all keys from book object
         const books = allKeys.reduce((arr, key) => {
             arr.isbn = isbn
+          if ([key] == "categories") {
+            return { ...arr, [key]: bookinfo[key].join(" ") }
+          } else {
             return { ...arr, [key]: bookinfo[key] }
+          }
         }, {})
         allBooks.push(books);
-
-
     }
     // Loop through allBooks and add into excel rows
     const addRows = async (data) => {
