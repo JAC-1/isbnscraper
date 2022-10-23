@@ -8,10 +8,10 @@ export default async function scrapeAll(browserInstance, xlsxData){
 	try{
 		browser = await browserInstance;
     isbns = await xlsxData;
-    // isbnsToScrape = await googleBooks(isbns);
-    // console.log(isbnsToScrape);
-		// await pageScraper(browser, isbnsToScrape);	
-    await pageScraper(browser, isbns);
+    isbnsToScrape = await googleBooks(isbns);
+    console.log(isbnsToScrape);
+		await pageScraper(browser, isbnsToScrape);	
+    // await pageScraper(browser, isbns);
 		
 	}
 	catch(err){
