@@ -30,17 +30,16 @@ async function pagePromise(url, fields, page) {
 }
 
 
-var position = 1
 
 const iterateThroughURLs = (urls, page) => async (data, isbn) => {
   await data
   for (const { name, url, fields } of urls) {
-    console.log(`${position} : Trying to find data on ${name} for ${isbn}...`);
+    // console.log(`${position} : Trying to find data on ${name} for ${isbn}...`);
+    console.log(`Trying to find data on ${name} for ${isbn}...`);
     try {
       const pageData = await pagePromise(url(isbn), fields, page);
       if (pageData.title) {
         let result = { ...data, [isbn]: pageData };
-        position += 1
         return await writeData(result)
       }
     } catch (err) {
@@ -50,7 +49,6 @@ const iterateThroughURLs = (urls, page) => async (data, isbn) => {
   }
   console.log(`Couldn't find any information for isbn: ${isbn} \n`);
 };
-
 
 
 export default async function scraper(browser, isbns) {

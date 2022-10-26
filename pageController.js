@@ -1,7 +1,7 @@
 import pageScraper from "./pageScraper.js";
 import excelReader from "./excelReader.js";
 // import googleBooks from "./googleSearch.js";
-export default async function scrapeAll(browserInstance, xlsxData){
+export default async function scrapeAll(browserInstance, xlsxData ){
 	let browser;
   let isbns;
   // let isbnsToScrape;
@@ -10,7 +10,7 @@ export default async function scrapeAll(browserInstance, xlsxData){
     isbns = await xlsxData;
     // isbnsToScrape = await googleBooks(isbns);
     // console.log(isbnsToScrape);
-		await pageScraper(browser, isbns);	
+		await pageScraper(browser, isbns );	
     // await pageScraper(browser, isbns);
 		
 	}
