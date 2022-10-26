@@ -13,7 +13,7 @@ async function pagePromise(url, fields, page) {
     async (acc, [field, queryString]) => {
       try {
         await page.click(".titleLink");
-        await page.waitForSelector(".img_genre1");
+        await page.waitForSelector(".item-info-area");
       } finally {
         try {
           const value = await page.$eval(queryString, (text) => text.textContent);
@@ -30,16 +30,17 @@ async function pagePromise(url, fields, page) {
 }
 
 
-
+var position = 1
 
 const iterateThroughURLs = (urls, page) => async (data, isbn) => {
   await data
   for (const { name, url, fields } of urls) {
-    console.log(`Trying to find data on ${name}...`);
+    console.log(`${position} : Trying to find data on ${name} for ${isbn}...`);
     try {
       const pageData = await pagePromise(url(isbn), fields, page);
       if (pageData.title) {
         let result = { ...data, [isbn]: pageData };
+        position += 1
         return await writeData(result)
       }
     } catch (err) {
