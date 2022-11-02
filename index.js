@@ -3,15 +3,16 @@ import scraperController from "./pageController.js";
 import excelReader from "./excelReader.js";
 import inDb from "./inDB.js";
 // import { books } from "./db.js";
+import searchGoogle from "./googleSearch.js";
 
 // Start the browser and create a browser instance
 let browserInstance = startBrowser();
 async function getIsbn() {
   let rawIsbns;
-  const path = "./biggertest.xlsx"
+  const path = "./RawBarcodes.xlsx";
   rawIsbns = await excelReader(path);
-  let isbns = await inDb(rawIsbns)
+  let isbns = await inDb(rawIsbns);
+  // searchGoogle(isbns);
   scraperController(browserInstance, isbns);
 }
-getIsbn()
-
+getIsbn();

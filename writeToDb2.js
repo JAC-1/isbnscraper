@@ -10,7 +10,7 @@ export default async function writeToDb(data) {
   const db = new Low(adapter);
 
   await db.read();
-  // Incoming data is { 
+  // Incoming data is {
   // isbnNum : {
   //  title:,
   //  author:,
@@ -19,16 +19,15 @@ export default async function writeToDb(data) {
   //  pages:,
   //
   // }}
-
   const allStoredKeys = db.data.map((i) => Object.keys(i)).flat();
-  const [incomingKey] = Object.keys(data);
-
+  let [incomingKey] = Object.keys(data);
+  if (incomingKey == undefined) incomingKey = { [data]: {"title": "unknown"} };
+  console.log(incomingKey)
 
   // Check if isbn entry is already in Database
+  
   allStoredKeys.includes(incomingKey)
     ? console.log(`${incomingKey} already in db. Aborting write.`)
-    : db.data.push(data);
-
+    : db.data.push(incomingKey);
   await db.write();
 }
-
