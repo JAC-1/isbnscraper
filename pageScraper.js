@@ -26,20 +26,12 @@ async function pagePromise(url, fields, page) {
   return result;
 }
 
-<<<<<<< HEAD
-const iterateThroughURLs = (urls, page) => async (data, isbn) => {
-  await data
-  for (const { name, url, fields } of urls) {
-    console.log(`Trying to find data on ${name}...`);
-=======
-
 
 const iterateThroughURLs = (urls, page) => async (data, isbn) => {
   await data
   for (const { name, url, fields } of urls) {
     // console.log(`${position} : Trying to find data on ${name} for ${isbn}...`);
     console.log(`Trying to find data on ${name} for ${isbn}...`);
->>>>>>> dev
     try {
       const pageData = await pagePromise(url(isbn), fields, page);
       if (pageData.title) {

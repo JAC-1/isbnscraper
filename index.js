@@ -11,27 +11,7 @@ async function getIsbn() {
   const path = "./biggertest.xlsx"
   rawIsbns = await excelReader(path);
   let isbns = await inDb(rawIsbns)
-  console.log(isbns)
   scraperController(browserInstance, isbns);
 }
 getIsbn()
-
-// Wait to read the isbn file
-<<<<<<< HEAD
-const path = "./biggertest.xlsx"
-const isbns = excelReader(path);
-//insert google books check here
-scraperController(browserInstance, isbns)
-// scraperController(browserInstance)
-=======
-
-// function findBooks() {
-//   console.log("Getting stuck running google Alg");
-//   const noIsbnData = googleBooks(isbns);
-//   scraperController(browserInstance, noIsbnData);
-// }
-
->>>>>>> dev
-
-// scraperController(browserInstance)
 
