@@ -12,24 +12,8 @@ export default async function isInDb(excelIsbns) {
   const db = new Low(adapter);
 
   await db.read();
-  const isbnInDb = db.data.map((i) => parseInt(Object.keys(i))).flat();
-  const isbns = excelIsbns.filter((i) => !isbnInDb.includes(i));
-  console.log(
-    "Already in the db: \n" +
-      isbnInDb.join("\n") +
-      `\nResuming from ${isbns[0]}`
-  );
-  return isbns;
+  const numOfDbEntries= db.data.map((i) => parseInt(Object.keys(i))).flat();
+  const unscrapedIbns = excelIsbns.slice(numOfDbEntries)
+
+  return unscrapedIbns;
 }
-
-
-
-const test = [
-  9789810950286,
-  9789811107016,
-  51488003953,
-  2801879440007,
-  9784905426264
-]
-
-isInDb(test);
