@@ -37,6 +37,7 @@ const iterateThroughURLs = (urls, page) => async (data, isbn) => {
         return await writeData(result);
       }
     } catch (err) {
+      console.log(err);
       console.log(`Couldn't find the isbn resource on ${name}`);
     }
   }

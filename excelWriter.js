@@ -59,7 +59,7 @@ export default async function writeToExcel() {
   };
   addRows(allBooks);
   try {
-    await workbook.xlsx.writeFile("./output/Science-Books.xlsx");
+    await workbook.xlsx.writeFile("./output/Magazines.xlsx");
     console.log("saved");
   } catch (err) {
     console.log(err);
