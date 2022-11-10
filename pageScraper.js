@@ -1,4 +1,5 @@
-import { urls } from "./resouce/siteResources.js";
+import { urls } from "./resouces/siteResources.js";
+import writeToDb from "./writeToDb.js";
 import writeData from "./writeToDb.js";
 
 async function pagePromise(url, fields, page) {
@@ -8,10 +9,7 @@ async function pagePromise(url, fields, page) {
   });
   const result = Object.entries(fields).reduce(async (acc, [field, queryString]) => {
     try {
-      // Clean me please
-      url[12] == "e" // Check if it's English books url
-        ? await page.click(".product_info_wrapper > a")
-        : await page.click(".titleLink");
+      await page.click(".titleLink");
       await page.waitUntil("networkidle");
     } finally {
       try {
@@ -43,6 +41,8 @@ const iterateThroughURLs = (urls, page) => async (data, isbn) => {
     }
   }
   console.log(`Couldn't find any information for isbn: ${isbn} \n`);
+  let result = { ...data, [isbn]: {} };
+  return await writeData(result);
 };
 
 export default async function scraper(browser, isbns) {

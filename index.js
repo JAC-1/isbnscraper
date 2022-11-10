@@ -12,3 +12,8 @@ async function getIsbn() {
   scraperController(browserInstance, isbnsToScrape);
 }
 getIsbn();
+
+// TODO
+//  - Add script that adds missed values to another database
+//  - Move things into their own files and change imports accordingly
+//  - Add numbers to duplicate isbns

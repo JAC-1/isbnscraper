@@ -1,4 +1,4 @@
-export default function removeStringFormating(data) {
+export function removeStringFormating(data) {
   const [incomingKey] = Object.keys(data);
   let values = Object.entries(data[incomingKey]).reduce((arr, i) => {
     const key = i[0];

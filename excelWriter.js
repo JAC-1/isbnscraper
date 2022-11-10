@@ -1,17 +1,8 @@
 import ExcelJS from "exceljs";
-import { join, dirname } from "path";
-import { Low, JSONFile } from "lowdb";
-import { fileURLToPath } from "url";
-
+import { getDbData } from "./dbManager.js";
 // Create new worksheet
 export default async function writeToExcel() {
-  const __dirname = dirname(fileURLToPath(import.meta.url));
-  const file = join(__dirname, "db.json");
-  const adapter = new JSONFile(file);
-  const db = new Low(adapter);
-
-  await db.read();
-  const data2 = db.data;
+  const db = await getDbData();
 
   // Create and add workbook deets
   const workbook = new ExcelJS.Workbook();
@@ -41,12 +32,12 @@ export default async function writeToExcel() {
   ];
 
   let allBooks = new Array();
-  for (let i = 0; i < data2.length; i++) {
-    const obj = db.data[i]; // Get entry object
+  for (let i = 0; i < db.length; i++) {
+    const obj = db[i]; // Get entry object
     const [isbn] = Object.keys(obj);
     try {
-       // Get ISBN Number
-      const bookinfo = db.data[i][isbn]; // Get book object via isbn
+      // Get ISBN Number
+      const bookinfo = db[i][isbn]; // Get book object via isbn
       const allKeys = Object.keys(bookinfo); // get all keys from book object
       const books = allKeys.reduce((arr, key) => {
         arr.isbn = isbn;
@@ -57,7 +48,7 @@ export default async function writeToExcel() {
         }
       }, {});
       allBooks.push(books);
-    } catch(e) {
+    } catch (e) {
       console.log(`Book information ${isbn}`);
       allBooks.push(isbn);
     }
@@ -68,7 +59,7 @@ export default async function writeToExcel() {
   };
   addRows(allBooks);
   try {
-    await workbook.xlsx.writeFile("output.xlsx");
+    await workbook.xlsx.writeFile("./output/Science-Books.xlsx");
     console.log("saved");
   } catch (err) {
     console.log(err);
