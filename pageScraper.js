@@ -1,4 +1,4 @@
-import { urls } from "./siteResources.js";
+import { urls } from "./resouce/siteResources.js";
 import writeData from "./writeToDb.js";
 
 async function pagePromise(url, fields, page) {
@@ -6,29 +6,23 @@ async function pagePromise(url, fields, page) {
   await page.goto(url, {
     waitUntil: "networkidle2",
   });
-  const result = Object.entries(fields).reduce(
-    async (acc, [field, queryString]) => {
+  const result = Object.entries(fields).reduce(async (acc, [field, queryString]) => {
+    try {
+      // Clean me please
+      url[12] == "e" // Check if it's English books url
+        ? await page.click(".product_info_wrapper > a")
+        : await page.click(".titleLink");
+      await page.waitUntil("networkidle");
+    } finally {
       try {
-        // Clean me please
-        url[12] == "e" // Check if it's English books url
-          ? await page.click(".product_info_wrapper > a")
-          : await page.click(".titleLink");
-        await page.waitUntil("networkidle");
-      } finally {
-        try {
-          const value = await page.$eval(
-            queryString,
-            (text) => text.textContent
-          );
-          return { ...(await acc), [field]: value };
-        } catch (err) {
-          console.log("Failed pluck for:", field);
-          return acc;
-        }
+        const value = await page.$eval(queryString, (text) => text.textContent);
+        return { ...(await acc), [field]: value };
+      } catch (err) {
+        console.log("Failed pluck for:", field);
+        return acc;
       }
-    },
-    {}
-  );
+    }
+  }, {});
 
   return result;
 }
@@ -53,10 +47,7 @@ const iterateThroughURLs = (urls, page) => async (data, isbn) => {
 
 export default async function scraper(browser, isbns) {
   const newPage = await browser.newPage();
-  const isbnData = await isbns.reduce(
-    await iterateThroughURLs(urls, newPage),
-    {}
-  );
+  const isbnData = await isbns.reduce(await iterateThroughURLs(urls, newPage), {});
 
   console.log("final result", JSON.stringify(isbnData));
   await browser.close();
