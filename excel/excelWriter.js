@@ -75,7 +75,7 @@ export default async function writeToExcel() {
   const arrayOfAllBooks = constructArrayOfBooks(db);
   addRows(sheet, arrayOfAllBooks);
   try {
-    await workbook.xlsx.writeFile("./output/Science.xlsx");
+    await workbook.xlsx.writeFile("./output/SkillBooks.xlsx");
     console.log("saved");
   } catch (err) {
     console.log(err);

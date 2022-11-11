@@ -1,38 +1,11 @@
-function addIsbnToBook(isbn, obj) {
-  return { [isbn]: obj };
-}
-
-function removeWhitespace(string) {
-  const cleanedString = string
-    .split("\n")
-    .map((i) => i.trim())
-    .join(" ");
-  return cleanedString;
-}
-
-function addSpaceInName(name) {
-  try {
-    const [_, lastInitial] = name.match(/[A-Z]/g);
-    const [firstName, lastName] = name.split(lastInitial);
-    const fullName = `${firstName} ${lastInitial + lastName}`;
-    return fullName;
-  } catch (e) {
-    return name;
-  }
-}
-
-const hasSpace = (name) => {
-  return name.split(" ")[1] ? name : addSpaceInName(name);
-};
+import { cleanerHandler, addIsbnToBook } from "./cleaningHelpers.js";
 
 function cleanStrings(isbn, rawBookData) {
   const bookInfoObj = Object.entries(rawBookData[isbn]).reduce((acc, i) => {
     const title = i[0];
     const value = i[1];
-    const cleanedValue = title == "author" ? hasSpace(value) : removeWhitespace(value);
+    const cleanedValue = cleanerHandler(value);
     return { ...acc, [title]: cleanedValue };
-    // const cleanedInfo = key == "author" ? addSpaceInName(value) : removeWhitespace(value);
-    // console.log(title, cleanedInfo);
   }, {});
   return bookInfoObj;
 }
