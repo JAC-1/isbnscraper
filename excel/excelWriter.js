@@ -1,25 +1,20 @@
 import ExcelJS from "exceljs";
-import { getDbData } from "./db/dbManager.js";
+import { getDbData } from "../db/dbManager.js";
 // Create new worksheet
-export default async function writeToExcel() {
-  const db = await getDbData();
 
-  // Create and add workbook deets
+function createWorkbook({ creator, lastModifiedBy, created }) {
   const workbook = new ExcelJS.Workbook();
 
-  workbook.creator = "Justin";
-  workbook.lastModifiedBy = "Justin";
-  workbook.created = new Date(1985, 8, 30);
-  workbook.modified = new Date();
-  workbook.lastPrinted = new Date(2016, 9, 27);
+  workbook.creator = creator;
+  workbook.lastModifiedBy = lastModifiedBy;
+  workbook.created = created;
+  return workbook;
+}
 
-  // Add a sheet
-
-  const sheet = workbook.addWorksheet("isbnLookup", {
+function createSheetandAddColumns(workbook, sheetName) {
+  const sheet = workbook.addWorksheet(sheetName, {
     views: [{ state: "frozen", xSplit: 1, ySplit: 1 }],
   });
-
-  // // Adding some columns
 
   sheet.columns = [
     { header: "ISBN", key: "isbn", width: 10 },
@@ -28,38 +23,53 @@ export default async function writeToExcel() {
     { header: "Publisher", key: "publisher", width: 32 },
     { header: "Pages", key: "pages", width: 32 },
     { header: "About", key: "about", width: 32 },
-    // { header: 'Categories', key: 'categories', width: 32 },
   ];
+  return sheet;
+}
 
-  let allBooks = new Array();
-  for (let i = 0; i < db.length; i++) {
-    const obj = db[i]; // Get entry object
-    const [isbn] = Object.keys(obj);
-    try {
-      // Get ISBN Number
-      const bookinfo = db[i][isbn]; // Get book object via isbn
-      const allKeys = Object.keys(bookinfo); // get all keys from book object
-      const books = allKeys.reduce((arr, key) => {
-        arr.isbn = isbn;
-        if ([key] == "about") {
-          return { ...arr, [key]: bookinfo[key].trim() };
-        } else {
-          return { ...arr, [key]: bookinfo[key] };
-        }
-      }, {});
-      allBooks.push(books);
-    } catch (e) {
-      console.log(`Book information ${isbn}`);
-      allBooks.push(isbn);
-    }
-  }
-  // Loop through allBooks and add into excel rows
-  const addRows = async (data) => {
-    await data.forEach((datapoint) => sheet.addRow(datapoint));
+function constructArrayOfBooks(db) {
+  const arr = new Array();
+  db.forEach((entry) => {
+    // console.log(entry);
+    const [isbn] = Object.keys(entry);
+    // console.log(author, title);
+    // console.log(isbn);
+    const { title, author, publisher, about, pages } = entry[isbn];
+    const cleanedObj = {
+      isbn: isbn,
+      title: title,
+      author: author,
+      publisher: publisher,
+      about: about,
+      pages: pages,
+    };
+    arr.push(cleanedObj);
+  });
+  return arr;
+}
+
+function constructBook() {
+  const sheetCreationInfo = {
+    creator: "Justin",
+    lastModifiedBy: "Justin",
+    created: new Date(2022, 11, 11),
   };
-  addRows(allBooks);
+  const workbook = createWorkbook(sheetCreationInfo);
+  const sheet = createSheetandAddColumns(workbook, "Manga");
+  return [sheet, workbook];
+}
+
+const addRows = async (sheet, data) => {
+  await data.forEach((datapoint) => sheet.addRow(datapoint));
+};
+
+export default async function writeToExcel() {
+  const db = await getDbData();
+  const [sheet, workbook] = constructBook();
+  const arrayOfAllBooks = constructArrayOfBooks(db);
+  addRows(sheet, arrayOfAllBooks);
   try {
-    await workbook.xlsx.writeFile("./output/Magazines.xlsx");
+    await workbook.xlsx.writeFile("./output/Manga.xlsx");
     console.log("saved");
   } catch (err) {
     console.log(err);
