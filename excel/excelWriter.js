@@ -27,27 +27,6 @@ function createSheetandAddColumns(workbook, sheetName) {
   return sheet;
 }
 
-function constructArrayOfBooks(db) {
-  const arr = new Array();
-  db.forEach((entry) => {
-    // console.log(entry);
-    const [isbn] = Object.keys(entry);
-    // console.log(author, title);
-    // console.log(isbn);
-    const { title, author, publisher, about, pages } = entry[isbn];
-    const cleanedObj = {
-      isbn: isbn,
-      title: title,
-      author: author,
-      publisher: publisher,
-      about: about,
-      pages: pages,
-    };
-    arr.push(cleanedObj);
-  });
-  return arr;
-}
-
 function constructBook() {
   const sheetCreationInfo = {
     creator: "Justin",
@@ -59,9 +38,36 @@ function constructBook() {
   return [sheet, workbook];
 }
 
+function filterPgNum(str) {
+  try {
+    return str.match(/[1-9]+/g).join("");
+  } catch (e) {
+    return "";
+  }
+}
+
 const addRows = async (sheet, data) => {
   await data.forEach((datapoint) => sheet.addRow(datapoint));
 };
+
+function constructArrayOfBooks(db) {
+  const arr = new Array();
+  db.forEach((entry) => {
+    const [isbn] = Object.keys(entry);
+    const { title, author, publisher, about, pages } = entry[isbn];
+    const pageNumber = filterPgNum(pages);
+    const cleanedObj = {
+      isbn: isbn,
+      title: title,
+      author: author,
+      publisher: publisher,
+      about: about,
+      pages: pageNumber,
+    };
+    arr.push(cleanedObj);
+  });
+  return arr;
+}
 
 export default async function writeToExcel() {
   const db = await getDbData();
