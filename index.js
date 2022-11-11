@@ -1,13 +1,13 @@
-import startBrowser from "./browser.js";
-import scraperController from "./pageController.js";
-import excelReader from "./excelReader.js";
-import whichIsbnsNotInDb from "./inDB.js";
+import startBrowser from "./scraper/browser.js";
+import scraperController from "./scraper/pageController.js";
+import excelReader from "./excel/excelReader.js";
+import isbnsNotInDb from "./scripts/inDB.js";
 
 let browserInstance = startBrowser();
 async function getIsbn() {
   const path = "./RawBarcodes.xlsx";
   const rawIsbns = await excelReader(path);
-  const isbnsToScrape = await whichIsbnsNotInDb(rawIsbns);
+  const isbnsToScrape = await isbnsNotInDb(rawIsbns);
   console.log(`Resuming from ${isbnsToScrape[0]}`);
   scraperController(browserInstance, isbnsToScrape);
 }

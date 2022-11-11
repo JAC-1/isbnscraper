@@ -1,4 +1,4 @@
-import { getDbData } from "./dbManager.js";
+import { getDbData } from "../db/dbManager.js";
 
 export default async function whichIsbnsNotInDb(excelIsbns) {
   // Returns array of numbers that are not already in local db

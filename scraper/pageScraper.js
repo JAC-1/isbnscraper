@@ -1,6 +1,5 @@
-import { urls } from "./resouces/siteResources.js";
-import writeToDb from "./writeToDb.js";
-import writeData from "./writeToDb.js";
+import { urls } from "../resouces/siteResources.js";
+import writeData from "../db/writeToDb.js";
 
 async function pagePromise(url, fields, page) {
   console.log(`Navigating to ${url}.`);

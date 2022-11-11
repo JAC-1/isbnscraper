@@ -1,5 +1,4 @@
-import pageScraper from "./pageScraper.js";
-import excelReader from "./excelReader.js";
+import pageScraper from "../scraper/pageScraper.js";
 export default async function scrapeAll(browserInstance, xlsxData) {
   let browser;
   let isbns;

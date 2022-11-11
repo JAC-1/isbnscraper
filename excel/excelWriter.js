@@ -1,5 +1,5 @@
 import ExcelJS from "exceljs";
-import { getDbData } from "./dbManager.js";
+import { getDbData } from "./db/dbManager.js";
 // Create new worksheet
 export default async function writeToExcel() {
   const db = await getDbData();
